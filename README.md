@@ -1,11 +1,29 @@
 # vitest-fsmodulecache-repro
 
-Reproduction for [vitest-dev/vitest#11789](https://github.com/vitest-dev/vitest/issues/11789):
-with `fsModuleCache: true`, a test in a subdirectory that dynamically imports a relative
-path outside the project root keeps failing after the missing file is created.
+Reproduction for [vitest-dev/vitest#11789](https://github.com/vitest-dev/vitest/issues/11789).
 
-The project root is `app/`. The test is `app/src/nested.test.js` and imports
-`../../shared/value.js`, which does not exist at first.
+With `fsModuleCache: true`, a test in a subdirectory that imports a relative path
+outside the project root keeps failing after the missing file is created. It fails
+until the cache is cleared.
+
+The project root is `app/`. Both tests import `../../shared/value.js`, which does not
+exist at first:
+
+- `app/src/nested.test.js` imports it dynamically.
+- `app/src/mocked.test.js` imports it statically but also calls `vi.mock`, which
+  turns the import into a dynamic one.
+
+## Run it
+
+```sh
+cd app
+npm i
+npm run repro
+```
+
+`npm run repro` runs the steps below and exits with 1 while the bug is present.
+
+## By hand
 
 ```sh
 cd app

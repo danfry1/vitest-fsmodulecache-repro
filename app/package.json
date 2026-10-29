@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "repro": "node repro.js"
   },
   "devDependencies": {
     "vitest": "5.0.5"
